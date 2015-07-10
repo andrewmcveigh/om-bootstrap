@@ -62,13 +62,14 @@
   `:open?` state to false if the user clicks outside the owning
   component OR hits the escape key."
   [owner]
-  (let [set-state (aget owner "setDropdownState")]
+  (let [set-state (aget owner "setDropdownState")
+        node (om/get-node owner)]
     (set! (.-dropdownListeners owner)
           (array
            (event-listener
             js/document "click"
             (fn [e]
-              (when-not (in-root? (.-target e) (om/get-node owner))
+              (when-not (in-root? (.-target e) node)
                 (set-state false))))
            (event-listener
             js/document "keyup"
